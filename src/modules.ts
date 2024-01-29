@@ -52,6 +52,13 @@ interface TopItems {
         }
         href: string;
         id: string;
+        images: [
+            {
+                height:number;
+                url: string;
+                width: number;
+            }
+        ]
         is_playable: boolean;
         linked_from: {};
         restrictions: {

@@ -58,54 +58,27 @@ function populateUI(profile: UserProfile) {
 }
 
 function presentTopTracks(profile: TopItems) {
-  const topTracks = document.getElementById(
-    "topTracks"
-  )!;
+  const topTracks = document.getElementById("topTracks")!;
   let trackList = profile.items;
   console.log(trackList);
-  
-  trackList.forEach(e => {
-    console.log(e.album);
-    console.log(e.album.artists);
-    console.log(e.album.name);
-    console.log(e.album.artists[0].name);
-    console.log(e.album.popularity);
-      
+
+  trackList.forEach((e) => {
     let trackContainer = document.createElement("div");
     let artistName = document.createElement("h3");
     let songName = document.createElement("h4");
-    
+    let img = document.createElement("img");
+
+
     artistName.innerHTML = e.album.artists[0].name;
     songName.innerHTML = e.album.name;
-    console.log(artistName);
-    
+    img.src = e.album.images[0].url;
+    img.className = "img"
+
 
     trackContainer.appendChild(artistName);
     trackContainer.appendChild(songName);
+    trackContainer.appendChild(img);
 
     topTracks.appendChild(trackContainer);
-  })
-  
-
-/*   for (let i = 0; i < trackList.length; i++) {
-    let element = trackList[i];
-    let artistName = document.createElement("h3");
-    let songName = document.createElement("h4");
-    let popularity = document.createElement("p");
-
-    console.log(element.albums.artists[0].name);
-    
-
-    artistName.innerText = element.albums.artists[0].name;
-    songName.innerHTML = element.albums.name;
-    popularity.innerHTML = element.albums.popularity.toString();
-
-    console.log(artistName);
-    
-
-    tracksContainer?.appendChild(artistName);
-    tracksContainer?.appendChild(songName);
-    tracksContainer?.appendChild(popularity);
-
-  } */
+  });
 }
