@@ -21,6 +21,40 @@ interface Image {
   width: number;
 }
 
+interface TopArtists {
+  href: string;
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
+  items: [
+    {
+      external_urls: {
+          spotify: string;
+      }
+      followers: {
+        href: string;
+        total: number;
+      }
+      genres: [string];
+      href: string;
+      id: string;
+      images: [
+        {
+          url: string;
+          height: number;
+          widht: number;
+        }
+      ]
+      name: string;
+      popularity: number;
+      type: string;
+      uri: string;
+    }
+  ];
+}
+
 interface TopItems {
   href: string;
   limit: number;

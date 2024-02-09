@@ -10,12 +10,15 @@ if (!code) {
   const accessToken = await getAccessToken(clientId, code);
   const profile = await fetchProfile(accessToken);
   const topTracks = await fetchTracks(accessToken);
+  const topArtists = await fetchArtists(accessToken);
   console.log(topTracks);
 
   console.log(profile);
 
   populateUI(profile);
   presentTopTracks(topTracks);
+  presentTopArtists(topArtists);
+  console.log(topArtists);
 }
 
 async function fetchProfile(token: string): Promise<UserProfile> {
@@ -30,6 +33,15 @@ async function fetchProfile(token: string): Promise<UserProfile> {
 
 async function fetchTracks(token: string): Promise<TopItems> {
   const result = await fetch("https://api.spotify.com/v1/me/top/tracks", {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return await result.json();
+}
+
+async function fetchArtists(token: string): Promise<TopArtists> {
+  const result = await fetch("https://api.spotify.com/v1/me/top/artists", {
     method: "GET",
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -68,17 +80,46 @@ function presentTopTracks(profile: TopItems) {
     let songName = document.createElement("h4");
     let img = document.createElement("img");
 
-
     artistName.innerHTML = e.album.artists[0].name;
     songName.innerHTML = e.album.name;
     img.src = e.album.images[0].url;
-    img.className = "img"
-
+    img.className = "img";
 
     trackContainer.appendChild(artistName);
     trackContainer.appendChild(songName);
     trackContainer.appendChild(img);
 
     topTracks.appendChild(trackContainer);
+  });
+}
+
+function presentTopArtists(profile: TopArtists) {
+  const topArtist = document.getElementById("topArtists")!;
+  let artistList = profile.items;
+  console.log(artistList);
+
+  artistList.forEach((e) => {
+    let artistContainer = document.createElement("div");
+    let artistName = document.createElement("h3");
+    let img = document.createElement("img");
+
+    let genres = e.genres;
+
+    genres.forEach((e) => {
+      let genContainer = document.createElement("div");
+      let gen = document.createElement("p");
+
+      gen.innerHTML = e;
+      genContainer.appendChild(gen);
+      artistContainer.appendChild(genContainer);
+    })
+
+    artistName.innerHTML = e.name;
+    img.src  = e.images[0].url;
+    img.className = "img";
+
+    artistContainer.appendChild(artistName);
+    artistContainer.appendChild(img);
+    topArtist.appendChild(artistContainer);
   });
 }
